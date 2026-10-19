@@ -1,0 +1,15 @@
+services:
+  - type: web
+    name: sports-scoreboard-backend
+    runtime: node
+    plan: free
+    rootDir: backend
+    buildCommand: npm install
+    startCommand: node src/index.js
+    envVars:
+      - key: PORT
+        value: 8000
+      - key: HOST
+        value: 0.0.0.0
+      - key: ARCJET_MODE
+        value: dry_run
