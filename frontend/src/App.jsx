@@ -20,8 +20,13 @@ import {
 } from 'lucide-react';
 import './App.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'https://sport-scoreboard.onrender.com';
-const WS_URL = import.meta.env.VITE_WS_URL || 'wss://sport-scoreboard.onrender.com/ws';
+const rawApi = import.meta.env.VITE_API_BASE || '';
+const rawWs = import.meta.env.VITE_WS_URL || '';
+
+const API_BASE =
+  rawApi && !rawApi.includes('your-') ? rawApi : 'https://sport-scoreboard.onrender.com';
+const WS_URL =
+  rawWs && !rawWs.includes('your-') ? rawWs : 'wss://sport-scoreboard.onrender.com/ws';
 
 // Country & Club Themes with Flags and Crests
 const TEAM_CONFIG = {
@@ -401,39 +406,6 @@ export default function App() {
           </div>
         </div>
       </div>
-    
-      {/* Offline / Configuration Guide Notice */}
-      {wsStatus !== 'open' && (
-        <div
-          style={{
-            background: 'linear-gradient(90deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.15))',
-            borderBottom: '1px solid rgba(245, 158, 11, 0.3)',
-            padding: '10px 20px',
-            display: 'flex',
-            flexWrap: 'wrap',
-            alignItems: 'center',
-            justifyContent: 'center',
-            gap: 12,
-            fontSize: 13,
-            color: '#f87171',
-            textAlign: 'center',
-          }}
-        >
-          <span>
-            ⚠️ <strong>Cloud Backend Offline / Connecting:</strong> Attempting connection to <code style={{ color: '#fef08a' }}>{API_BASE}</code>.
-          </span>
-          <span style={{ color: '#cbd5e1' }}>
-            Showing cached stadium telecast. If you just deployed on Render, it takes ~30s to wake up on the free tier.
-          </span>
-          {typeof window !== 'undefined' &&
-            window.location.hostname.includes('vercel.app') &&
-            API_BASE.includes('localhost') && (
-              <span style={{ color: '#38bdf8', fontWeight: 600 }}>
-                💡 Tip: Add <code>VITE_API_BASE</code> and <code>VITE_WS_URL</code> in Vercel Project Settings → Environment Variables with your Render URL, then Redeploy.
-              </span>
-            )}
-        </div>
-      )}
 
       <div className="app-container">
         {/* Fan Dashboard Header */}
