@@ -20,8 +20,8 @@ import {
 } from 'lucide-react';
 import './App.css';
 
-const API_BASE = import.meta.env.VITE_API_BASE || 'http://localhost:8000';
-const WS_URL = import.meta.env.VITE_WS_URL || 'ws://localhost:8000/ws';
+const API_BASE = import.meta.env.VITE_API_BASE || 'https://sport-scoreboard.onrender.com';
+const WS_URL = import.meta.env.VITE_WS_URL || 'wss://sport-scoreboard.onrender.com/ws';
 
 // Country & Club Themes with Flags and Crests
 const TEAM_CONFIG = {
