@@ -1,0 +1,27 @@
+{
+  "name": "sports-backend",
+  "version": "1.0.0",
+  "description": "Real-time sports match engine with native WebSockets, Express, and Drizzle",
+  "main": "src/index.js",
+  "type": "module",
+  "scripts": {
+    "dev": "node --watch src/index.js",
+    "start": "node src/index.js",
+    "seed": "node src/db/seed.js"
+  },
+  "keywords": ["websockets", "realtime", "sports", "express", "drizzle"],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^18.0.8",
+    "drizzle-orm": "^0.45.1",
+    "express": "^5.3.0",
+    "pg": "^8.13.3",
+    "ws": "^8.22.0",
+    "zod": "^3.24.2"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}
