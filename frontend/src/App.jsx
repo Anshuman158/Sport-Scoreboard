@@ -59,12 +59,125 @@ function getTeamInfo(name) {
   );
 }
 
+const FALLBACK_MATCHES = [
+  {
+    id: 1,
+    sport: 'cricket',
+    leagueName: 'ICC World Championship',
+    homeTeam: 'India',
+    awayTeam: 'Australia',
+    homeScore: 284,
+    awayScore: 242,
+    status: 'live',
+    periodDetail: 'India 284/4 (45.2 ov) • Need 24 runs in 28 balls',
+    venue: 'Wankhede Stadium, Mumbai',
+    city: 'Mumbai',
+    cricketMeta: {
+      currentBatters: ['Virat Kohli 88* (62)', 'Hardik Pandya 34* (18)'],
+      currentBowler: 'Mitchell Starc 2/54 (8.2 ov)',
+      crr: '6.26',
+      rrr: '5.14',
+    },
+  },
+  {
+    id: 2,
+    sport: 'football',
+    leagueName: 'Bundesliga',
+    homeTeam: 'Bayer Leverkusen',
+    awayTeam: 'SC Freiburg',
+    homeScore: 2,
+    awayScore: 1,
+    status: 'finished',
+    periodDetail: 'FT (90\')',
+    venue: 'BayArena',
+    city: 'Leverkusen',
+  },
+  {
+    id: 3,
+    sport: 'cricket',
+    leagueName: 'ICC World Series',
+    homeTeam: 'England',
+    awayTeam: 'South Africa',
+    homeScore: 312,
+    awayScore: 198,
+    status: 'live',
+    periodDetail: 'South Africa 198/5 (34.0 ov) • Target: 313',
+    venue: "Lord's Cricket Ground, London",
+    city: 'London',
+    cricketMeta: {
+      currentBatters: ['Heinrich Klaasen 64* (42)', 'David Miller 28* (22)'],
+      currentBowler: 'Jofra Archer 3/41 (7.0 ov)',
+      crr: '5.82',
+      rrr: '7.18',
+    },
+  },
+  {
+    id: 4,
+    sport: 'football',
+    leagueName: 'Premier League',
+    homeTeam: 'Tottenham Hotspur',
+    awayTeam: 'Coventry City',
+    homeScore: 0,
+    awayScore: 0,
+    status: 'scheduled',
+    periodDetail: 'Tonight at 8:00 PM',
+    venue: 'Tottenham Hotspur Stadium',
+    city: 'London',
+  },
+];
+
+const FALLBACK_LINEUPS = [
+  {
+    teamName: 'India',
+    formation: 'Playing XI (ICC ODI/T20)',
+    startingXI: [
+      { id: 401, name: 'Rohit Sharma (C)', jersey: 45, position: 'Opening Batsman', starter: true },
+      { id: 402, name: 'Shubman Gill', jersey: 77, position: 'Opening Batsman', starter: true },
+      { id: 403, name: 'Virat Kohli', jersey: 18, position: 'Top-order Batsman', starter: true },
+      { id: 404, name: 'Shreyas Iyer', jersey: 96, position: 'Middle-order Batsman', starter: true },
+      { id: 405, name: 'KL Rahul (WK)', jersey: 1, position: 'Wicketkeeper Batsman', starter: true },
+      { id: 406, name: 'Hardik Pandya', jersey: 33, position: 'All-Rounder (Pace)', starter: true },
+      { id: 407, name: 'Ravindra Jadeja', jersey: 8, position: 'All-Rounder (Spin)', starter: true },
+      { id: 408, name: 'Washington Sundar', jersey: 5, position: 'All-Rounder (Off Spin)', starter: true },
+      { id: 409, name: 'Jasprit Bumrah', jersey: 93, position: 'Lead Fast Bowler', starter: true },
+      { id: 410, name: 'Mohammed Siraj', jersey: 73, position: 'Fast Bowler', starter: true },
+      { id: 411, name: 'Kuldeep Yadav', jersey: 23, position: 'Left-arm Wrist Spinner', starter: true },
+    ],
+    bench: [
+      { id: 412, name: 'Rishabh Pant (WK)', jersey: 17, position: 'Wicketkeeper', starter: false },
+      { id: 413, name: 'Mohammed Shami', jersey: 11, position: 'Fast Bowler', starter: false },
+    ],
+  },
+  {
+    teamName: 'Australia',
+    formation: 'Playing XI (ICC ODI/T20)',
+    startingXI: [
+      { id: 421, name: 'Travis Head', jersey: 62, position: 'Opening Batsman', starter: true },
+      { id: 422, name: 'Mitchell Marsh', jersey: 8, position: 'All-Rounder', starter: true },
+      { id: 423, name: 'Steve Smith', jersey: 49, position: 'Top-order Batsman', starter: true },
+      { id: 424, name: 'Marnus Labuschagne', jersey: 33, position: 'Middle-order Batsman', starter: true },
+      { id: 425, name: 'Glenn Maxwell', jersey: 32, position: 'All-Rounder (Off Spin)', starter: true },
+      { id: 426, name: 'Josh Inglis (WK)', jersey: 48, position: 'Wicketkeeper Batsman', starter: true },
+      { id: 427, name: 'Marcus Stoinis', jersey: 17, position: 'All-Rounder (Pace)', starter: true },
+      { id: 428, name: 'Pat Cummins (C)', jersey: 30, position: 'Fast Bowler (Captain)', starter: true },
+      { id: 429, name: 'Mitchell Starc', jersey: 56, position: 'Left-arm Fast Bowler', starter: true },
+      { id: 430, name: 'Adam Zampa', jersey: 88, position: 'Leg Break Bowler', starter: true },
+      { id: 431, name: 'Josh Hazlewood', jersey: 38, position: 'Fast Bowler', starter: true },
+    ],
+    bench: [
+      { id: 432, name: 'Alex Carey (WK)', jersey: 4, position: 'Wicketkeeper', starter: false },
+      { id: 433, name: 'Cameron Green', jersey: 42, position: 'All-Rounder', starter: false },
+    ],
+  },
+];
+
 export default function App() {
-  const [matches, setMatches] = useState([]);
-  const [selectedMatchId, setSelectedMatchId] = useState(null);
-  const [activeMatch, setActiveMatch] = useState(null);
+  const [matches, setMatches] = useState(FALLBACK_MATCHES);
+  const [selectedMatchId, setSelectedMatchId] = useState(1);
+  const [activeMatch, setActiveMatch] = useState(FALLBACK_MATCHES[0]);
   const [commentaries, setCommentaries] = useState([]);
-  const [lineups, setLineups] = useState([]);
+  const [lineups, setLineups] = useState(FALLBACK_LINEUPS);
+  const [backendError, setBackendError] = useState(false);
   const [selectedSport, setSelectedSport] = useState('all'); // all, football, cricket
   const [activeIntelTab, setActiveIntelTab] = useState('lineups'); // lineups, commentary, stats
   const [wsStatus, setWsStatus] = useState('connecting');
@@ -84,16 +197,16 @@ export default function App() {
       const json = await res.json();
       if (json.data && json.data.length > 0) {
         setMatches(json.data);
-        if (!selectedMatchId) {
-          const first = json.data[0];
-          setSelectedMatchId(first.id);
-          setActiveMatch(first);
-          fetchLineups(first.id);
-          fetchCommentary(first.id);
-        }
+        setBackendError(false);
+        const matchToSelect = json.data.find((m) => m.id === selectedMatchId) || json.data[0];
+        setSelectedMatchId(matchToSelect.id);
+        setActiveMatch(matchToSelect);
+        fetchLineups(matchToSelect.id);
+        fetchCommentary(matchToSelect.id);
       }
     } catch (err) {
-      console.error('Failed to fetch real matches:', err);
+      console.warn('Backend fetch failed, using preloaded stadium feed:', err.message);
+      setBackendError(true);
     }
   };
 
@@ -288,6 +401,39 @@ export default function App() {
           </div>
         </div>
       </div>
+    
+      {/* Offline / Configuration Guide Notice */}
+      {wsStatus !== 'open' && (
+        <div
+          style={{
+            background: 'linear-gradient(90deg, rgba(239, 68, 68, 0.15), rgba(245, 158, 11, 0.15))',
+            borderBottom: '1px solid rgba(245, 158, 11, 0.3)',
+            padding: '10px 20px',
+            display: 'flex',
+            flexWrap: 'wrap',
+            alignItems: 'center',
+            justifyContent: 'center',
+            gap: 12,
+            fontSize: 13,
+            color: '#f87171',
+            textAlign: 'center',
+          }}
+        >
+          <span>
+            ⚠️ <strong>Cloud Backend Offline / Connecting:</strong> Attempting connection to <code style={{ color: '#fef08a' }}>{API_BASE}</code>.
+          </span>
+          <span style={{ color: '#cbd5e1' }}>
+            Showing cached stadium telecast. If you just deployed on Render, it takes ~30s to wake up on the free tier.
+          </span>
+          {typeof window !== 'undefined' &&
+            window.location.hostname.includes('vercel.app') &&
+            API_BASE.includes('localhost') && (
+              <span style={{ color: '#38bdf8', fontWeight: 600 }}>
+                💡 Tip: Add <code>VITE_API_BASE</code> and <code>VITE_WS_URL</code> in Vercel Project Settings → Environment Variables with your Render URL, then Redeploy.
+              </span>
+            )}
+        </div>
+      )}
 
       <div className="app-container">
         {/* Fan Dashboard Header */}
